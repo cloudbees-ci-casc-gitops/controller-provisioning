@@ -1,7 +1,10 @@
 library 'pipeline-library'
 pipeline {
   agent none
-  options { timeout(time: 10, unit: 'MINUTES') }
+  options { 
+    timeout(time: 10, unit: 'MINUTES')
+    skipDefaultCheckout true
+  }
   stages {
     stage('Provision Managed Controller') {
       agent {
@@ -25,6 +28,7 @@ pipeline {
           sh '''
             rm -rf ./${BUNDLE_ID} || true
             mkdir -p ${BUNDLE_ID}
+            l s-la checkout
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/controller.yaml
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/bundle/bundle.yaml
           '''
@@ -43,7 +47,7 @@ pipeline {
             
           curl --user "$ADMIN_CLI_TOKEN_USR:$ADMIN_CLI_TOKEN_PSW" -XPOST \
             http://cjoc/cjoc/casc-items/create-items?path=/controllers \
-            --data-binary @./controller.yaml -H 'Content-Type:text/yaml'
+            --data-binary @./checkout/controller.yaml -H 'Content-Type:text/yaml'
         '''
       }
     }
