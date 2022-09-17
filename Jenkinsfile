@@ -28,7 +28,6 @@ pipeline {
           sh '''
             rm -rf ./${BUNDLE_ID} || true
             mkdir -p ${BUNDLE_ID}
-            l s-la checkout
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/controller.yaml
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/bundle/bundle.yaml
           '''
