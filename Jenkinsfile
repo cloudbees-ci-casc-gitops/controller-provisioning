@@ -13,14 +13,18 @@ pipeline {
         ADMIN_CLI_TOKEN = credentials('admin-cli-token')
       }
       steps {
-        gitHubParseOriginUrl()
         container("kubectl") {
           sh '''
-            rm -rf ./${BUNDLE_ID} || true
             rm -rf ./checkout || true
-            mkdir -p ${BUNDLE_ID}
             mkdir -p checkout
-            git clone https://github.com/${GITHUB_ORG}/${GITHUB_REPO}.git checkout
+          '''
+          dir('checkout') {
+            checkout scm
+            gitHubParseOriginUrl()
+          }
+          sh '''
+            rm -rf ./${BUNDLE_ID} || true
+            mkdir -p ${BUNDLE_ID}
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/controller.yaml
             sed -i "s/REPLACE_REPO/$GITHUB_REPO/g" checkout/bundle/bundle.yaml
           '''
