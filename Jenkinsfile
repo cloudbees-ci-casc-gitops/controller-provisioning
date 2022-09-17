@@ -38,7 +38,7 @@ pipeline {
             http://cjoc/cjoc/load-casc-bundles/checkout
             
           curl --user "$ADMIN_CLI_TOKEN_USR:$ADMIN_CLI_TOKEN_PSW" -XPOST \
-            http://cjoc/cjoc/casc-items/create-items?path=/staging-cloudbees-ci-casc-workshop \
+            http://cjoc/cjoc/casc-items/create-items?path=/controllers \
             --data-binary @./controller.yaml -H 'Content-Type:text/yaml'
         '''
       }
