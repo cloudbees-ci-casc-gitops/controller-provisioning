@@ -12,6 +12,10 @@ pipeline {
           yaml libraryResource ('podtemplates/kubectl.yml')
         }
       }
+      when {
+        beforeAgent true
+        branch 'main'
+      }
       environment {
         ADMIN_CLI_TOKEN = credentials('admin-cli-token')
       }
